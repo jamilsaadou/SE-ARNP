@@ -1,26 +1,285 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: 248 250 252;
+    --foreground: 51 65 85;
+    --primary: 255 107 53;
+    --primary-foreground: 255 255 255;
+    --muted: 248 250 252;
+    --muted-foreground: 100 116 139;
+    --border: 226 232 240;
+    --input: 226 232 240;
+    --ring: 255 107 53;
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Scrollbar personnalisée */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400;
+  }
+
+  /* Print styles */
+  @media print {
+    .no-print {
+      display: none !important;
+    }
+    
+    .print-break {
+      page-break-after: always;
+    }
+    
+    body {
+      @apply bg-white text-black;
+    }
+  }
+
+  /* Animations personnalisées */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+
+  .animate-slide-in {
+    animation: slideIn 0.3s ease-out forwards;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2s infinite;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Styles pour les graphiques */
+  .chart-container {
+    @apply bg-white p-4 rounded-lg shadow-sm border;
+  }
+
+  .chart-tooltip {
+    @apply bg-white p-3 rounded-lg shadow-lg border text-sm;
+  }
+
+  /* Styles pour les formulaires */
+  .form-field {
+    @apply space-y-2;
+  }
+
+  .form-error {
+    @apply text-sm text-red-600 mt-1;
+  }
+
+  /* Loading states */
+  .loading-skeleton {
+    @apply animate-pulse bg-gray-200 rounded;
+  }
+
+  .loading-spinner {
+    @apply animate-spin rounded-full border-2 border-gray-300 border-t-primary;
+  }
+
+  /* États de focus améliorés */
+  .focus-visible {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+  }
+
+  /* Styles pour les badges de statut */
+  .status-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .status-excellent {
+    @apply bg-green-100 text-green-800;
+  }
+
+  .status-satisfaisant {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+
+  .status-critique {
+    @apply bg-red-100 text-red-800;
+  }
+
+  /* Amélioration des couleurs muted pour un meilleur contraste */
+  .text-muted-400 {
+    @apply text-gray-500;
+  }
+
+  .text-muted-500 {
+    @apply text-gray-600;
+  }
+
+  .text-muted-600 {
+    @apply text-gray-700;
+  }
+
+  .text-muted-700 {
+    @apply text-gray-800;
+  }
+
+  .text-muted-900 {
+    @apply text-gray-900;
+  }
+
+  .bg-muted-100 {
+    @apply bg-gray-100;
+  }
+
+  .bg-muted-200 {
+    @apply bg-gray-200;
+  }
+
+  .border-muted-100 {
+    @apply border-gray-100;
+  }
+
+  .border-muted-200 {
+    @apply border-gray-200;
+  }
+
+  .hover\:bg-muted-100:hover {
+    @apply hover:bg-gray-100;
+  }
+
+  .hover\:text-muted-900:hover {
+    @apply hover:text-gray-900;
+  }
+
+  .hover\:border-muted-200:hover {
+    @apply hover:border-gray-200;
+  }
+
+  /* Correction des auto-fill du navigateur */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+    -webkit-text-fill-color: #1f2937 !important;
+    background-color: white !important;
+    color: #1f2937 !important;
+  }
+
+  /* Force les styles corrects pour tous les inputs et selects */
+  input, select, textarea {
+    background-color: white !important;
+    color: #1f2937 !important;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    background-color: white !important;
+    color: #1f2937 !important;
+  }
+
+  /* Styles pour les options des selects */
+  select option {
+    background-color: white !important;
+    color: #1f2937 !important;
+  }
+
+  /* Empêche les styles jaunes du navigateur */
+  input[style*="background"],
+  select[style*="background"] {
+    background-color: white !important;
+    color: #1f2937 !important;
+  }
+
+  /* Force les placeholders à être visibles */
+  input::placeholder,
+  textarea::placeholder {
+    color: #6b7280 !important;
+    opacity: 0.7;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+
+  .shadow-glow {
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+  }
+
+  .transition-smooth {
+    @apply transition-all duration-300 ease-in-out;
+  }
+
+  /* Utilitaires pour l'accessibilité */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+  }
+
+  /* Utilitaires pour les containers */
+  .container-fluid {
+    @apply w-full max-w-none mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-tight {
+    @apply w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Utilitaires pour les grilles responsives */
+  .grid-responsive {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  .grid-cards {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4;
+  }
 }
